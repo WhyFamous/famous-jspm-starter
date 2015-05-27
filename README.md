@@ -1,5 +1,9 @@
 # Famous - jspm - starter
 
+## [Work in Progress - use at own risk]
+
+---  
+
 ##Installing & Running the starter
  - Make sure `jspm` CLI is installed globally if you have not already  
 

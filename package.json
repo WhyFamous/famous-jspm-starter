@@ -1,0 +1,58 @@
+{
+  "name": "famous-jspm-skeleton",
+  "version": "0.1.0",
+  "description": "A skeleton using jspm, gulp and Famo.us",
+  "scripts": {
+    "build": "gulp build",
+    "fix-glslify": "node fix-glslify.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:talves/famous-jspm-skeleton.git"
+  },
+  "keywords": [
+    "famo.us",
+    "webpack"
+  ],
+  "author": "Tony Alves",
+  "contributors": [
+    {
+      "name": "Tony Alves",
+      "url": "https://github.com/talves/"
+    }
+  ],
+  "license": "MIT",
+  "jspm": {
+    "directories": {},
+    "dependencies": {
+      "famous": "npm:famous@0.5.0"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.1.13",
+      "babel-runtime": "npm:babel-runtime@^5.1.13",
+      "core-js": "npm:core-js@^0.9.4"
+    }
+  },
+  "devDependencies": {
+    "bluebird": "^2.9.26",
+    "browser-sync": "^2.7.1",
+    "del": "^1.1.1",
+    "glslify": "1.6.0",
+    "gulp": "^3.8.11",
+    "gulp-babel": "^5.1.0",
+    "gulp-bump": "^0.1.11",
+    "gulp-changed": "^1.1.0",
+    "gulp-gh-pages": "^0.5.1",
+    "gulp-jshint": "^1.9.0",
+    "gulp-plumber": "^0.6.6",
+    "gulp-protractor": "^0.0.12",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.3.0",
+    "jshint-stylish": "^1.0.2",
+    "jspm": "^0.15.6",
+    "object.assign": "^2.0.1",
+    "require-dir": "^0.3.0",
+    "run-sequence": "^1.1.0",
+    "vinyl-paths": "^1.0.0"
+  }
+}

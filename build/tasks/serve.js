@@ -1,5 +1,7 @@
 var gulp = require('gulp');
 var browserSync = require('browser-sync');
+var config = require('../config').paths;
+var destPath = config.dest + '/';
 
 // this task utilizes the browsersync plugin
 // to create a dev server instance
@@ -9,7 +11,7 @@ gulp.task('serve', ['build'], function(done) {
     open: false,
     port: 9000,
     server: {
-      baseDir: ['.'],
+      baseDir: [destPath],
       middleware: function (req, res, next) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         next();
@@ -23,7 +25,7 @@ gulp.task('serve-bundle', ['build-bundle'], function(done) {
     open: false,
     port: 9000,
     server: {
-      baseDir: ['.'],
+      baseDir: [destPath],
       middleware: function (req, res, next) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         next();
@@ -37,7 +39,7 @@ gulp.task('serve-sfx', ['build-sfx'], function(done) {
     open: false,
     port: 9000,
     server: {
-      baseDir: ['./dist'],
+      baseDir: [destPath],
       middleware: function (req, res, next) {
         res.setHeader('Access-Control-Allow-Origin', '*');
         next();

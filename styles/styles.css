@@ -1,9 +1,0 @@
-body {
-    background-color: #ffffff;
-    color: #000;
-}
-
-.double-sided {
-    -webkit-backface-visibility: visible;
-    backface-visibility: visible;
-}

@@ -3,8 +3,8 @@
 // Famous dependencies
 import DOMElement from 'famous/dom-renderables/DOMElement';
 import FamousEngine from 'famous/core/FamousEngine';
-import { SpinnerAnimation as Spinner } from './js/animation/SpinnerAnimation';
-import { LogoNode as Logo } from './js/LogoNode';
+import { SpinnerAnimation as Spinner } from './animation/SpinnerAnimation';
+import { LogoNode as Logo } from './nodes/LogoNode';
 
 // Boilerplate code to make your life easier
 FamousEngine.init();

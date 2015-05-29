@@ -27,7 +27,8 @@ gulp.task('bundle-remove', function(callback) {
 // copies the bundles to the bundle directory location
 gulp.task('bundle-copy', function() {
   return gulp.src(paths.bundle + '/*.js')
-    .pipe(gulp.dest(bundleDest));
+    .pipe(gulp.dest(bundleDest))
+    .pipe(browserSync.reload({stream:true}));
 });
 
 // Task to run the bundle creation and copies
@@ -54,7 +55,7 @@ gulp.task('bundle-app-scripts', function(callback) {
     {inject:true, minify: true}
   ).then(function () {
     gulp.src(paths.bundle + '/app-bundle.js')
-      .pipe(gulp.dest(bundleSripts));
+      .pipe(gulp.dest(bundleScripts));
     callback();
   });
 });
@@ -69,7 +70,7 @@ gulp.task('bundle-famous', function(callback) {
     {inject:true, minify: true}
   ).then(function () {
     gulp.src(paths.bundle + '/famous-bundle.js')
-      .pipe(gulp.dest(bundleSripts));
+      .pipe(gulp.dest(bundleScripts));
     callback();
   });
 });
@@ -88,7 +89,7 @@ gulp.task('bundle-sfx', ['clean-bundle'], function (done) {
     bundleDest + '/sfx-app-bundle.js',
     {inject:false, minify: true, mangle: true, sourceMaps: true}
   ).then(function () {
-
+    browserSync.reload({stream:false});
     done();
   });
 });

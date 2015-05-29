@@ -5,6 +5,7 @@ var rename = require('gulp-rename');
 var plumber = require('gulp-plumber');
 var to5 = require('gulp-babel');
 var sourcemaps = require('gulp-sourcemaps');
+var browserSync  = require('browser-sync');
 var config = require('../config');
 var assign = Object.assign || require('object.assign');
 var scriptsDest = config.paths.dest + config.paths.scripts.replace('.','');
@@ -67,7 +68,8 @@ gulp.task('build-sfx-html', function () {
   return gulp.src(config.paths.src + '/sfx-index.html')
     .pipe(changed(config.paths.dest, {extension: '.html'}))
     .pipe(rename('index.html'))
-    .pipe(gulp.dest(config.paths.dest));
+    .pipe(gulp.dest(config.paths.dest))
+    .pipe(browserSync.reload({stream:true}));
 });
 
 gulp.task('sfx-assets', function(callback) {

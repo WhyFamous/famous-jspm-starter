@@ -1,16 +1,17 @@
-var dest = "./dist";
-var src = './src';
-var scripts = './scripts';
-var deploy = './deploy';
-var bundle = './bundle';
-var root = './';
-var jspm = './jspm_packages'
+var destPath = "dist/";
+var srcPath = 'src/';
+var scriptsPath = 'scripts/';
+var deployPath = 'deploy/';
+var bundlePath = 'bundle/';
+var imagesPath = 'images/';
+var stylesPath = 'styles/';
+var jspmPath = 'jspm_packages/'
 
 module.exports = {
   browserSync: {
     server: {
       // Serve up our build folder
-      baseDir: dest
+      baseDir: './' + destPath
     }
   },
   babel: {
@@ -26,47 +27,30 @@ module.exports = {
       ]
     }
   },
-  jspm: {
-    root: root,
-    src: jspm,
-    dest: dest
-  },
-  images: {
-    src: src + "/images/**",
-    dest: dest + "/images"
-  },
-  ico: {
-    src: src + "/favicon.ico",
-    dest: dest
-  },
-  markup: {
-    src: src + "/**/*.html",
-    dest: dest + ""
-  },
-  styles: {
-    src: src + "/styles/**",
-    dest: dest + "/styles"
-  },
   paths: {
-    src: src,
-    scripts: scripts,
-    dest: dest,
-    root: root,
-    bundle: bundle,
+    src: srcPath,
+    dest: destPath,
+    bundle: bundlePath,
+    deploy: deployPath,
+    scripts: scriptsPath,
+    images: imagesPath,
+    styles: stylesPath,
+    ico: '/favicon.ico',
+    jspm: jspmPath,
     wildcards: {
-      scripts: scripts + '/**/*.js',
-      markup: src + '/**/*.html',
-      styles: src + '/styles/**/*',
-      images: src + '/images/**/*'
+      scripts: srcPath + scriptsPath + '**/*.js',
+      markup: srcPath + '**/*.html',
+      styles: srcPath + stylesPath + '**/*',
+      images: srcPath + imagesPath + '**/*'
     }
   },
   deploy: {
-    src: dest,
-    dest: deploy
+    src: destPath,
+    dest: deployPath
   },
   production: {
-    cssSrc: dest + '/*.css',
-    jsSrc: dest + '/*.js',
-    dest: dest
+    cssSrc: destPath + '*.css',
+    jsSrc: destPath + '*.js',
+    dest: destPath
   }
 };

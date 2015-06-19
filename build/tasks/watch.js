@@ -1,15 +1,13 @@
 var gulp = require('gulp');
-var config = require('../config').paths;
+var paths = require('../config').paths;
 var reportChange = require('../utilities/reportChange');
+var browserSync  = require('browser-sync');
 
-var markup = config.wildcards.markup;
-var styles = config.wildcards.styles;
-var images = config.wildcards.images;
+var markup = paths.wildcards.markup;
+var styles = paths.wildcards.styles;
+var images = paths.wildcards.images;
 
-var scripts = [config.scripts + '*.js',
-              config.scripts + '/nodes/**/*.js',
-              config.scripts + '/animation/**/*.js',
-              ];
+var scripts = [paths.wildcards.scripts];
 
 // this task will watch for changes
 // to js, html, and css files and call the
@@ -22,13 +20,13 @@ gulp.task('watch', ['serve'], function() {
 });
 
 gulp.task('watch-bundle', ['serve-bundle'], function() {
-  gulp.watch(scripts, ['build-scripts', 'bundle-app']).on('change', reportChange);
+  gulp.watch(scripts, ['build-scripts', 'bundle-app', browserSync.reload]).on('change', reportChange);
   gulp.watch(markup, ['markup']).on('change', reportChange);
   gulp.watch(styles, ['styles']).on('change', reportChange);
 });
 
 gulp.task('watch-sfx', ['serve-sfx'], function() {
-  gulp.watch(scripts, ['build-sfx']).on('change', reportChange);
+  gulp.watch(scripts, ['bundle-sfx']).on('change', reportChange);
   gulp.watch('sfx-index.html', ['build-sfx-html']).on('change', reportChange);
   gulp.watch(styles, ['styles']).on('change', reportChange);
 });

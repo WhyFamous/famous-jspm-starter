@@ -7,8 +7,8 @@ var to5 = require('gulp-babel');
 var sourcemaps = require('gulp-sourcemaps');
 var browserSync  = require('browser-sync');
 var config = require('../config');
+var paths = config.paths;
 var assign = Object.assign || require('object.assign');
-var scriptsDest = config.paths.dest + config.paths.scripts.replace('.','');
 
 var babelOptions = config.babel.options;
 
@@ -16,7 +16,7 @@ var babelOptions = config.babel.options;
 // in ./clean.js), then runs the build-system
 // and markup tasks in parallel
 // https://www.npmjs.com/package/gulp-run-sequence
-gulp.task('build', ['clean', 'unbundle'], function(callback) {
+gulp.task('build', ['clean', 'clean-bundle', 'unbundle'], function(callback) {
   return runSequence(
     ['build-scripts', 'assets'],
     ['jspm-packages'],
@@ -33,7 +33,7 @@ gulp.task('assets', function(callback) {
 
 gulp.task('build-bundle', ['clean', 'clean-bundle'], function(callback) {
   return runSequence(
-    ['build-scripts', 'assets'],
+    ['assets'],
     ['bundle'],
     ['jspm-packages-bundle'],
     callback
@@ -44,14 +44,15 @@ gulp.task('build-bundle', ['clean', 'clean-bundle'], function(callback) {
 // the plumber() call prevents 'pipe breaking' caused
 // by errors from other gulp plugins
 // https://www.npmjs.com/package/gulp-plumber
-gulp.task('build-scripts', ['clean-scripts'], function () {
-  return gulp.src(config.paths.wildcards.scripts)
+gulp.task('build-scripts', function () {
+  return gulp.src([paths.wildcards.scripts])
     .pipe(plumber())
-    .pipe(changed(config.paths.dest, {extension: '.js'}))
+    .pipe(changed(paths.dest + paths.scripts, {extension: '.js'}))
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(to5(assign({}, babelOptions, {modules:'system'})))
-    .pipe(sourcemaps.write({includeContent: false, sourceRoot: config.paths.root }))
-    .pipe(gulp.dest(scriptsDest));
+    .pipe(sourcemaps.write({includeContent: false, sourceRoot: './' }))
+    .pipe(gulp.dest(paths.dest + paths.scripts))
+    .pipe(browserSync.reload({stream:true}));
 });
 
 // builds a single self-executing bundle
@@ -65,10 +66,10 @@ gulp.task('build-sfx', function(callback) {
 
 // copies changed html files to the output directory
 gulp.task('build-sfx-html', function () {
-  return gulp.src(config.paths.src + '/sfx-index.html')
-    .pipe(changed(config.paths.dest, {extension: '.html'}))
+  return gulp.src(paths.src + 'sfx-index.html')
+    .pipe(changed(paths.dest, {extension: '.html'}))
     .pipe(rename('index.html'))
-    .pipe(gulp.dest(config.paths.dest))
+    .pipe(gulp.dest(paths.dest))
     .pipe(browserSync.reload({stream:true}));
 });
 

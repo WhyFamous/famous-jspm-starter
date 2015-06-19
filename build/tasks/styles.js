@@ -1,11 +1,11 @@
 var gulp = require('gulp');
 var changed    = require('gulp-changed');
-var config = require('../config').styles;
+var paths = require('../config').paths;
 var browserSync  = require('browser-sync');
 
 gulp.task('styles', function() {
-  return gulp.src(config.src)
-    .pipe(changed(config.dest, {extension: '.css'}))
-    .pipe(gulp.dest(config.dest))
+  return gulp.src(paths.wildcards.styles)
+    .pipe(changed(paths.dest + paths.styles, {extension: '.css'}))
+    .pipe(gulp.dest(paths.dest + paths.styles))
     .pipe(browserSync.reload({stream:true}));
 });

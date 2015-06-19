@@ -3,45 +3,43 @@ var jspm = require('jspm/api');
 var del = require('del');
 var runSequence = require('run-sequence'); // only until gulp 4.0
 var vinylPaths = require('vinyl-paths');
-var bundle = require('jspm/lib/bundle');
+var bundle = require('jspm/lib/bundle'); // will be released soon
 var browserSync  = require('browser-sync');
 var paths = require('../config').paths;
 
 // A temporary path for bundle reference for jspm bundle paths
-var bundleScripts = paths.scripts + paths.bundle.replace('.','');
+var bundleScripts = paths.scripts + paths.bundle;
 // A final destination for the bundle directory location
-var bundleDest = paths.dest + bundleScripts.replace('.','');
+var bundleDest = paths.dest + bundleScripts;
 
 // builds bundle modules (copies to destination)
 gulp.task('bundle', function(callback) {
   return runSequence(
+    ['build-scripts'],
+    ['bundle-famous'],
     ['bundle-app'],
     callback
   )
 });
 
-// removes the temporary bundle path
-gulp.task('bundle-remove', function(callback) {
-  del(bundleScripts, callback);
-});
-// copies the bundles to the bundle directory location
-gulp.task('bundle-copy', function() {
-  return gulp.src(paths.bundle + '/*.js')
-    .pipe(gulp.dest(bundleDest))
-    .pipe(browserSync.reload({stream:true}));
-});
-
-// Task to run the bundle creation and copies
 gulp.task('bundle-app', function(callback) {
   return runSequence(
-    ['bundle-famous'],
+    ['bundle-copy-scripts'],
     ['bundle-app-scripts'],
-    ['bundle-copy'],
-    ['bundle-remove'],
+    ['bundle-app-copy'],
     callback
   )
 });
 
+gulp.task('bundle-app-copy', function() {
+  return gulp.src(paths.bundle + '*.js')
+    .pipe(gulp.dest(bundleDest));
+});
+
+gulp.task('bundle-copy-scripts', ['build-scripts'], function () {
+  return gulp.src([paths.dest + paths.scripts + '**/*.js'])
+    .pipe(gulp.dest(paths.scripts));
+});
 
 // Builds a bundle module for our app (copies to temporary)
 gulp.task('bundle-app-scripts', function(callback) {
@@ -50,11 +48,11 @@ gulp.task('bundle-app-scripts', function(callback) {
   ].join(' + ')
 
   jspm.bundle(
-    deps + ' - ' + paths.bundle + '/famous-bundle',
-    paths.bundle + '/app-bundle.js',
+    deps + ' - ' + paths.bundle + 'famous-bundle',
+    paths.bundle + 'app-bundle.js',
     {inject:true, minify: true}
   ).then(function () {
-    gulp.src(paths.bundle + '/app-bundle.js')
+    gulp.src(paths.bundle + 'app-bundle.js')
       .pipe(gulp.dest(bundleScripts));
     callback();
   });
@@ -66,10 +64,10 @@ gulp.task('bundle-famous', function(callback) {
     [
       'famous'
     ].join(' + '),
-    paths.bundle + '/famous-bundle.js',
+    paths.bundle + 'famous-bundle.js',
     {inject:true, minify: true}
   ).then(function () {
-    gulp.src(paths.bundle + '/famous-bundle.js')
+    gulp.src(paths.bundle + 'famous-bundle.js')
       .pipe(gulp.dest(bundleScripts));
     callback();
   });
@@ -81,12 +79,21 @@ gulp.task('unbundle', ['clean-bundle'], function() {
 });
 
 // Creates a self-executing bundle into the deploy build path
-gulp.task('bundle-sfx', ['clean-bundle'], function (done) {
+gulp.task('bundle-sfx', ['clean-scripts'], function(callback) {
+  return runSequence(
+    ['build-scripts'],
+    ['bundle-copy-scripts'],
+    ['bundle-sfx-file'],
+    callback
+  )
+});
+
+gulp.task('bundle-sfx-file', function (done) {
   jspm.bundleSFX(
     [
       'main'
     ].join(' + '),
-    bundleDest + '/sfx-app-bundle.js',
+    bundleDest + 'sfx-app-bundle.js',
     {inject:false, minify: true, mangle: true, sourceMaps: true}
   ).then(function () {
     browserSync.reload({stream:false});

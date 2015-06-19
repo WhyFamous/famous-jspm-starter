@@ -1,7 +1,7 @@
 var gulp = require('gulp');
 var browserSync = require('browser-sync');
-var config = require('../config').paths;
-var destPath = config.dest + '/';
+var paths = require('../config').paths;
+var destPath = './' + paths.dest;
 
 // this task utilizes the browsersync plugin
 // to create a dev server instance
